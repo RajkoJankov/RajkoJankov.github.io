@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang= "en">
+<head>
+	<title>Contact US</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="CSS/tutorial.css">
+	<style>
+		body {
+			background: url("images/pozadina.jpg") no-repeat center fixed;
+		}
+		
+		.img_container {
+			position: relative;
+			float: left;
+			width: 33.33%;
+			padding: 2px;
+			height: 200px;
+			background-size: cover;
+			background-position: center;
+			background-clip: content-box;
+			background-repeat: no-repeat;
+		}
+		
+		
+		
+		@media screen and (max-width: 1024px) {
+			.img_container {width: 50%;}
+		}
+	
+		@media screen and (max-width: 600px) {
+			.img_container {width: 100%;}
+		}
+		
+	</style>
+</head>
+<body>
+	<header><h1 style="margin-left:30px;">Games, games, and more games...</h1>
+		<nav>
+			<ul>
+				<li><a href="Index.html">Home</a></li>
+				<li><a href="Games.html">Games</a></li>
+				<li><a class="active" href="#Contact Us">Contact Us</a></li>
+				<li><a href="About.html">About</a></li>
+			</ul>
+		</nav>
+	</header>
+	<section>
+		<h2 style="padding-left:20px;">Contact me if you have questions..</h2>
+		<article class="clearfix">
+		<p>If you want you can reach me on one of these sites:</p>
+		<br>
+		<div class="img_container" style="background-image:url(images/facebook.png)">
+			<div class="overlay">
+				<div class="text">User: <a href="https://www.facebook.com/profile.php?id=100012873137595">Rajko Jankov</a></div>
+			</div>
+		</div>
+		<div class="img_container" style="background-image:url(images/skype.png)">
+		<div class="overlay">
+				<div class="text">User: rajkolo</div>
+			</div>
+		</div>
+		<br style="clear:both">
+		<br>
+		<p>Or you can just email me and i will reply as soon as i can:</p>
+		<br>
+		<form method="post">
+		<p>
+		<label for="name">First name: </label>
+		<input id="name" type="text" placeholder="First name" size="52">
+		</p>
+		<p>
+		<label for="lastname">Last name: </label>
+		<input id="lastname" type="text" placeholder="Last name" size="52">
+		</p>
+		<p>
+		<label for="email">e-mail: </label>
+		<input id="email" type="email" placeholder="someone@me.com" size="52">
+		</p>
+		<p>
+		<label for="message">message: </label>
+		<textarea id="message" placeholder="your message goes here..."></textarea>
+		</p>
+		<br>
+		<p>
+		<label for="submit"></label>
+		<input id="submit "type="submit">
+		</p>
+		</form>
+		</article>
+	</section>
+	<footer>
+		<i>Created by</i>: Jankov Rajko<br>
+		<i>e-mail</i>: <a href="mailto:jankovrajko@gmail.com">jankovrajko@gmail.com</a><br>
+		<i>facebook</i>: <a href="https://www.facebook.com/profile.php?id=100012873137595" target="_blank">Jankov Rajko</a><br>
+		&copy <i>2018 | Novi Becej </i>
+	</footer>
+</body>
+</html>
