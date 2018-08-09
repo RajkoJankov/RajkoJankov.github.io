@@ -96,27 +96,51 @@ a:hover {
 	transform: translate(-50%, -50%);
 }
 		
-textarea {
-	vertical-align:text-top;
-	width:397px;
-	height:300px;
-	resize:none;
+label {
+	display: inline-block;
+	padding: 5px;
+	float:left;
+	width: 100px;
+	font-weight: bold;
 }
 		
-form {display: table;}
-		
-p {display: table-row;}
+textarea {
+	resize: vertical;
+	min-height: 400px;
+	padding: 10px;
+	width: 500px;
+	border-radius: 5px;
+	margin-bottom: 5px;
+}
 
-label {display: table-cell;}
+input[type=submit] {
+	padding: 15px 30px;
+	cursor: pointer;
+}
 		
-input {display: table-cell;}
-
+input {
+	padding: 10px; 
+	border-radius: 5px;
+	margin-bottom: 5px;
+}
+		
+input[type=text], input[type=email] {
+	width: 500px;
+}
+	
 @media screen and (max-width: 1024px) {
 	body {width: 100%;}
+	textarea, input[type=text], input[type=email] {
+		width: 420px;
+	}
 }
 	
 @media screen and (max-width: 600px) {
 	body {width: 100%;}
 	nav ul li {float: none; text-align: center;}
 	.active {background-color: hsl(0,0%,30%);}
+	label, textarea, input, input[type=text], input[type=email] {
+		width: 100%;
+		min-width: 0;
+	}
 }
