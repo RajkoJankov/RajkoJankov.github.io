@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Calculator1</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="calculator1.css">
+	<script type="text/javascript" src="Calculator1.js"></script>
+</head>
+<body onkeydown="buttonPress(event)">
+	<section>
+		<form name="calculator">
+			<h2 style="text-align: center;">Calculator</h2>
+			<p><input id="firstNumber" type="text" value="" onfocus="field = this;" style="left: 10px">
+			<span id="numOperators" style="position: absolute;left: 170px"></span>
+			<input id="secondNumber" type="text" value="" onfocus="field = this;" style="left: 190px">
+			<span style="position: absolute;left: 350px;">=</span>
+			<input id="result" type="number" value="0" style="left: 370px" disabled></p>
+			
+			<table style="position: absolute;top: 150px; left: 55px;">
+				<tr>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="7" value="7"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="8" value="8"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="9" value="9"></td>
+					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
+					name="subtractBtn" value="/"></td>
+				</tr>
+				<tr>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="4" value="4"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="5" value="5"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="6" value="6"></td>
+					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()"
+					name="multiplyBtn" value="*"></td>
+				</tr>
+				<tr>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="1" value="1"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="2" value="2"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="3" value="3"></td>
+					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
+					name="minustn" value="-"></td>
+				</tr>
+				<tr>
+					<td><input class="special" type="button" onclick="specialSigns(this.name); this.blur()" 
+					name="plusMinus" value="&#177;"></td>
+					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="0" value="0"></td>
+					<td><input class="special" type="button" onclick="specialSigns(this.value); this.blur()" 
+					name="decimalBtn" value="."></td>
+					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
+					name="plusBtn" value="+"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input class="special" type="button" onclick="specialSigns(this.name); this.blur()" 
+					name="clear" value="C" style="width: 100%;"></td>
+					<td><input class="special" type="button" onclick="specialSigns(this.name); this.blur()" name="backSpaceBtn"
+					value="&larr;"></td>
+					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
+					name="equalBtn" value="="></td>
+				</tr>
+			</table>
+		</form>
+	</section>
+</body>
+</html>
