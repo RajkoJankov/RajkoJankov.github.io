@@ -1,4 +1,4 @@
 ## Change in code
 
-1. Fixed media query for Contact page for small screens
+1. Added calculator to project . Can be opened from index.html
 
