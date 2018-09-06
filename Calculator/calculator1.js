@@ -1,9 +1,12 @@
 let field = "";
 let numResult;
+let numbers1 = document.getElementsByTagName('input');
+
 // this function enter values from onclick buttons to one of input fields
 function numberButton(val) {
 	document.getElementById("errorMsg").innerHTML = "";
 	document.getElementById("result").value = "";
+	
 	if (field === "" && val >= 0 && val <= 9) {
 		document.getElementById("errorMsg").innerHTML = "You need to click on an input field before you can enter numbers"
 	} else if (field.value.length === 15 && val !== "+" && val !== "-" && 
@@ -62,6 +65,33 @@ function buttonPress(event) {
 	const button2 = event.keyCode;
 	document.getElementById("errorMsg").innerHTML = "";
 	document.getElementById("result").value = "";
+	
+	// this -for- checks if keyboard input matches the on screen buttons and "clicks" them
+	for (let i = 3; i < numbers1.length; i++) { 
+		if (event.key === numbers1[i].value && numbers1[i].value >= "0" && numbers1[i].value <= "9") {
+			numbers1[i].setAttribute("id", "activeId");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.key === "." && numbers1[i].value === ".") {
+			numbers1[i].setAttribute("id", "activeId");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.keyCode === 27 && numbers1[i].value === "C") {
+			numbers1[i].setAttribute("id", "activeId");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.keyCode === 8 && numbers1[i].name === "backSpaceBtn") {
+			numbers1[i].setAttribute("id", "activeId");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.key === numbers1[i].value && (numbers1[i].value === "+" || numbers1[i].value === "-" ||
+		numbers1[i].value === "*" || numbers1[i].value === "/")) {
+			numbers1[i].setAttribute("id", "activeId2");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.key === "^" && numbers1[i].value === "pow") {
+			numbers1[i].setAttribute("id", "activeId2");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		} else if (event.keyCode === 13 && numbers1[i].value === "=") {
+			numbers1[i].setAttribute("id", "activeId2");
+			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
+		}
+	}
 	
 	if (field === "" && (button1 >= 0 || button1 <= 9)) {
 		document.getElementById("errorMsg").innerHTML = "You need to click on an input field before you can enter numbers"

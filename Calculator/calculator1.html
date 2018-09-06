@@ -5,7 +5,6 @@
 	<title>Calculator1</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="calculator1.css">
-	<script type="text/javascript" src="calculator1.js"></script>
 </head>
 <body onkeydown="buttonPress(event)" onload='field = document.getElementById("firstNumber")'>
 	<section>
@@ -25,14 +24,14 @@
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="8" value="8"></td>
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="9" value="9"></td>
 					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
-					name="subtractBtn" value="pow"></td>
+					name="powerBtn" value="pow"></td>
 				</tr>
 				<tr>
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="4" value="4"></td>
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="5" value="5"></td>
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="6" value="6"></td>
 					<td><input class="special operators" type="button" onclick="numberButton(this.value); this.blur()" 
-					name="subtractBtn" value="/"></td>
+					name="divideBtn" value="/"></td>
 				</tr>
 				<tr>
 					<td><input type="button" onclick="numberButton(this.value); this.blur()" name="1" value="1"></td>
@@ -63,5 +62,14 @@
 			</table>
 		</form>
 	</section>
+	<br><hr>
+	<article>
+		<h3> Keyboard Shortcuts </h3>
+		<p><b>Escape button (Esc)</b> - Same as on screen button "C", clears both field inputs, numeric operators and result field</p>
+		<p><b>Backspace button (&#10229)</b> - Same as on screen button "&#8592", deletes last number added to input field</p> 
+		<p><b>Tab button (&#8633)</b> - Switch from one input field to another</p>
+		<p><b>Shift + 6</b> - Same as on screen button "pow", it adds " ^ " numeric operator for <i>X<sup>Y</sup></i> operations</p>
+	</article>
+	<script type="text/javascript" src="calculator1.js"></script>
 </body>
 </html>
