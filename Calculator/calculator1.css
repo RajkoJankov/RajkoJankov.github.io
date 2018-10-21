@@ -3,65 +3,80 @@
 }
 
 section {
+	border: 1px solid blue;
 	position: relative;
 	margin: auto;
-	padding: 10px;
-	width: 530px;
-	height: 470px;
-	background-color: hsl(0,0%,93%);
+	width: 320px;
+	height: 500px;
+	background-color: rgb(237,237,237);
 }
 
 article {
 	text-align: center;
 }
 
-input[type=number]::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+table {
+	position: absolute;
+	bottom: 0;
+	border-spacing: 0;
 }
 
 input[type=button] {
-	width: 100px;
-	padding: 5px 20px;
-	font-size: 200%;
-	font-weight: bold;
+	width: 77px;
+	height: 50px;
+	padding: 0;
+	font-size: 150%;
 	background-color: white;
+	border: none;
+}
+
+input[type=button].bolded {
+	font-weight: bold;
 }
 
 input[type=button].special {
-	background-color: hsl(0,0%,95%);
+	background-color: rgb(240,240,240);
 }
 
 input[type=button]:hover {
-	background-color: hsl(0,0%,84%);
+	background-color: rgb(216,216,216);
 }
 
 input[type=button]:active {
-	background-color: hsl(0,0%,75%);
+	background-color: rgb(192,192,192);
 }
 
 input[type=button].operators:hover {
-	background-color: hsl(216, 70%, 60%);
+	background-color: rgb(0,98,177);
 	color: white;
 }
 
 input[type=button].operators:active {
-	background-color: hsl(209, 100%, 90%);
+	background-color: rgb(146,207,255);
 	color: white;
 }
 
-input[type=number] {
+input[type=text] {
+	padding: 0 10px;
 	position: absolute;
-	background-color: hsl(0,0%,91%);
+	background-color: rgb(237,237,237);
 	width: 150px;
 	text-align: right;
+	font-size: 42px;
+	font-weight: bold;
+	border: none;
 }
 
-input[type=text] {
-	position: absolute;
-	background-color: hsl(0,0%,91%);
-	width: 150px;
-	text-align: right;
+input[type=text][disabled] {
+	color: black;
+}
+
+input[type=text]#resultPath {
+	width: 100%; 
+	font-size: 100%;
+	font-weight: normal; 
+	height: 30px; 
+	top: 90px;
 }
 
 span#errorMsg {
@@ -69,10 +84,10 @@ span#errorMsg {
 }
 
 input#activeId2 {
-	background-color: hsl(209, 100%, 90%);
+	background-color: rgb(146,207,255);
 	color: white;
 }
 
 input#activeId {
-	background-color: hsl(0,0%,75%);
+	background-color: rgb(192,192,192);
 }

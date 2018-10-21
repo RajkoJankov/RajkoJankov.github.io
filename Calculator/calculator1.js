@@ -1,87 +1,116 @@
-let field = "";
+let field;
 let numResult;
 let numbers1 = document.getElementsByTagName('input');
+let numberArray = [], operatorArray = [], switch01 = 0;
 
-// this function enter values from onclick buttons to one of input fields
+// this function enter values from onclick buttons to input field
 function numberButton(val) {
-	document.getElementById("errorMsg").innerHTML = "";
-	document.getElementById("result").value = "";
-	
-	if (field === "" && val >= 0 && val <= 9) {
-		document.getElementById("errorMsg").innerHTML = "You need to click on an input field before you can enter numbers"
-	} else if (field.value.length === 15 && val !== "+" && val !== "-" && 
+	if (document.getElementById("resultPath").value === "Cannot divide by zero" && switch01 === 1) {
+		document.getElementById("resultPath").value = "";
+		switch01 = 0;
+		field.value = 0;
+	}
+	if (field.value.length === 12 && val !== "+" && val !== "-" && 
 	val !== "*" && val !== "/" && val !== "=" && val !== "^") {
 	} else {
-		if (field.value === "" && val === "0") {
-			return field.value = "0";
-		} else if (field.value === "0" && val >= 0 && val <= 9) {
+		if (field.value === "0" && val >= 0 && val <= 9) {
 			return field.value = val;
 		} else if (field.value !== "0" && val >= 0 && val <= 9) {
-			return field.value += val;
+			if (switch01 === 1) {
+				switch01 = 0;
+				return field.value = val;
+			} else return field.value += val;
 		} else if (val === "pow") {
-			document.getElementById("numOperators").innerHTML = "^";
+			if (switch01 === 1 && document.getElementById("resultPath").value !== "") {
+				operatorArray[operatorArray.length - 1] = "^";
+				document.getElementById("resultPath").value = document.getElementById("resultPath").value.slice(0, 
+				document.getElementById("resultPath").value.length -1);
+				document.getElementById("resultPath").value += "^";
+			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
+				document.getElementById("resultPath").value = field.value + " " + "^";
+				numberArray.push(field.value);
+				operatorArray.push("^");
+			} else {
+				document.getElementById("resultPath").value += " " + field.value + " " + "^";
+				numberArray.push(field.value);
+				operatorArray.push("^");
+				return switch01 = 1;
+			}
 		} else if (val === "+" || val === "-" || val === "*" || val === "/") {
-				document.getElementById("numOperators").innerHTML = val;
+			if (switch01 === 1 && document.getElementById("resultPath").value !== "") {
+				operatorArray[operatorArray.length - 1] = val;
+				document.getElementById("resultPath").value = document.getElementById("resultPath").value.slice(0, 
+				document.getElementById("resultPath").value.length -1);
+				document.getElementById("resultPath").value += val;
+			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
+				document.getElementById("resultPath").value = field.value + " " + val;
+				numberArray.push(field.value);
+				operatorArray.push(val);
+			} else {
+				document.getElementById("resultPath").value += " " + field.value + " " + val;
+				numberArray.push(field.value);
+				operatorArray.push(val);
+				return switch01 = 1;
+			}
 		} else if (val === "=") {
-			if (document.getElementById("firstNumber").value !== "" && document.getElementById("secondNumber").value !== ""
-			&& document.getElementById("numOperators").innerText !== "") {
-				if (document.getElementById("numOperators").innerText === "+") {
-					numResult = Number(document.getElementById("firstNumber").value) + 
-					Number(document.getElementById("secondNumber").value);
-				} else if (document.getElementById("numOperators").innerText === "-") {
-					numResult = document.getElementById("firstNumber").value - 
-					document.getElementById("secondNumber").value;
-				} else if (document.getElementById("numOperators").innerText === "*") {
-					numResult = document.getElementById("firstNumber").value * 
-					document.getElementById("secondNumber").value;
-				} else if (document.getElementById("numOperators").innerText === "^") {
-					let tempResult = 1;
-					let tempNumber1 = document.getElementById("firstNumber").value;
-					let tempNumber2 = document.getElementById("secondNumber").value;
-					for (let count = 0; count < tempNumber2; count++) {
-						tempResult *= tempNumber1;
+			if (operatorArray !== []) {
+				numberArray.push(field.value);
+				numResult = parseFloat(numberArray[0]);
+				document.getElementById("resultPath").value = "";
+				for (let i = 1; i < numberArray.length; i++) {
+					if (operatorArray[i - 1] === "+") {
+						numResult = numResult + parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "-") {
+						numResult = numResult - parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "*") {
+						numResult = numResult * parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "^") {
+						let tempResult = 1;
+						let tempNumber1 = numResult;
+						let tempNumber2 = parseInt(numberArray[i]);
+						for (let count = 0; count < tempNumber2; count++) {
+							tempResult *= tempNumber1;
 					}
 					numResult = tempResult;
-				} else { 
-					if (document.getElementById("secondNumber").value === "0") {
-						document.getElementById("errorMsg").innerHTML = "User input denied: Can not divide by zero";
-						numResult = "";
-					} else {
-					numResult = document.getElementById("firstNumber").value /
-					document.getElementById("secondNumber").value;
-					}
-				}
-				document.getElementById("result").value = parseFloat(numResult.toFixed(9));
+					} else if (operatorArray[i - 1] === "/") {
+						if (numberArray[i] === "0") {
+							numResult = NaN;
+							document.getElementById("resultPath").value = "Cannot divide by zero";
+						} else {
+							numResult = numResult / parseFloat(numberArray[i]);
+						}
+					} 
+				} field.value = parseFloat(numResult.toFixed(9));
+				numberArray = [];
+				operatorArray = [];
+				switch01 = 1;
 			} else {
-				document.getElementById("errorMsg").innerHTML = "Enter numbers in both fields and add operator ex. + - * or /"
 			}
 		}
 	}
 }
 		
-//this function enter all numerical and special operator values from keyboard to input fields 
+//this function enter all numerical and special operator values from keyboard to input field 
 function buttonPress(event) {
 	const button1 = event.key;
 	const button2 = event.keyCode;
-	document.getElementById("errorMsg").innerHTML = "";
-	document.getElementById("result").value = "";
 	
 	// this -for- checks if keyboard input matches the on screen buttons and "clicks" them
-	for (let i = 3; i < numbers1.length; i++) { 
+	for (let i = 2; i < numbers1.length; i++) { 
 		if (event.key === numbers1[i].value && numbers1[i].value >= "0" && numbers1[i].value <= "9") {
 			numbers1[i].setAttribute("id", "activeId");
 			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
 		} else if (event.key === "." && numbers1[i].value === ".") {
 			numbers1[i].setAttribute("id", "activeId");
 			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
-		} else if (event.keyCode === 27 && numbers1[i].value === "C") {
+		} else if (event.keyCode === 27 && numbers1[i].value === "c") {
 			numbers1[i].setAttribute("id", "activeId");
 			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
 		} else if (event.keyCode === 8 && numbers1[i].name === "backSpaceBtn") {
 			numbers1[i].setAttribute("id", "activeId");
 			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
 		} else if (event.key === numbers1[i].value && (numbers1[i].value === "+" || numbers1[i].value === "-" ||
-		numbers1[i].value === "*" || numbers1[i].value === "/")) {
+			numbers1[i].value === "*" || numbers1[i].value === "/")) {
 			numbers1[i].setAttribute("id", "activeId2");
 			setTimeout(function(){numbers1[i].removeAttribute("id");}, 100);
 		} else if (event.key === "^" && numbers1[i].value === "pow") {
@@ -93,14 +122,12 @@ function buttonPress(event) {
 		}
 	}
 	
-	if (field === "" && (button1 >= 0 || button1 <= 9)) {
-		document.getElementById("errorMsg").innerHTML = "You need to click on an input field before you can enter numbers"
-	} else if (field === "" &&  button2 === 9) {
+	if (button2 === 9) {
 		event.returnValue = false;
 		return false;
 	} else {}
 	
-	if (field.value.length === 15 && button1 !== "+" && button1 !== "-" && 
+	if (field.value.length === 12 && button1 !== "+" && button1 !== "-" && 
 	button1 !== "*" && button1 !== "/" && button1 !== "^" && button2 !== 13 && button2 !== 8 && button2 !== 27) {
 	} else {
 		field.blur();
@@ -108,69 +135,91 @@ function buttonPress(event) {
 			event.returnValue = false;
 			return false;
 		}
-		if (field.value === "" && button1 === 0) {
-			field.value = button1;
-		} else if (field.value === "0" && button1 >= 0 && button1 <= 9) {
+		if (field.value === "0" && button1 >= 0 && button1 <= 9) {
 			return field.value = button1;
-		} else if (button1 >= 0 && button1 <= 9){
-			return field.value += button1;
+		} else if (field.value !== "0" && button1 >= 0 && button1 <= 9) {
+			if (switch01 === 1) {
+				switch01 = 0;
+				return field.value = button1;
+			} else return field.value += button1;
 		} else if (button2 === 8) {
-			return field.value = field.value.slice(0, field.value.length -1);
-		} else if (button2 === 27) {
-				event.preventDefault();
-				document.getElementById("firstNumber").value = "";
-				document.getElementById("secondNumber").value = "";
-				document.getElementById("numOperators").innerHTML = "";
-				document.getElementById("result").value = "";
-				return field = "";
-		} else if (button2 === 9) {
-			if (field == document.getElementById("firstNumber")) {
-				field = document.getElementById("secondNumber");
-				field.focus();
-				event.preventDefault();
+			if (document.getElementById("resultPath").value === "Cannot divide by zero") {
+				document.getElementById("resultPath").value = "";
+				return field.value = 0;
+			} else if (field.value.length === 1) {
+				return field.value = 0;
 			} else {
-				field = document.getElementById("firstNumber");
-				field.focus();
-				event.preventDefault();
+			return field.value = field.value.slice(0, field.value.length -1);
 			}
-		} else if (field.value === "" && button1 === ".") {
+		} else if (button2 === 27) {
+			field.value = "0";
+			document.getElementById("resultPath").value = "";
+			numberArray = [];
+			operatorArray = [];
+			return switch01 = 0;
+		} else if (field.value === "0" && button1 === ".") {
+			if (switch01 === 1) {
+			switch01 = 0;
 			return field.value = "0.";
+		} else return field.value = "0.";
 		} else if (!/\./.test(field.value) && button1 === ".") {
-			return field.value += ".";
+			if (document.getElementById("resultPath").value === "Cannot divide by zero") {
+				switch01 = 0;
+				document.getElementById("resultPath").value = "";
+				return field.value = "0.";
+			} else if (switch01 === 1) {
+				switch01 = 0;
+				return field.value = "0.";
+			} else return field.value += ".";
 		} else if (button1 === "+" || button1 === "-" || button1 === "*" || button1 === "/" || button1 === "^") {
-			document.getElementById("numOperators").innerHTML = button1;
+			if (switch01 === 1 && document.getElementById("resultPath").value !== "") {
+				operatorArray[operatorArray.length - 1] = button1;
+				document.getElementById("resultPath").value = document.getElementById("resultPath").value.slice(0, 
+				document.getElementById("resultPath").value.length -1);
+				document.getElementById("resultPath").value += button1;
+			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
+				document.getElementById("resultPath").value = field.value + " " + button1;
+				numberArray.push(field.value);
+				operatorArray.push(button1);
+			} else {
+				document.getElementById("resultPath").value += " " + field.value + " " + button1;
+				numberArray.push(field.value);
+				operatorArray.push(button1);
+				return switch01 = 1;
+			}
 		} else if (button2 === 13) { // this condition check for numOperators in span and store calculation result in numResult variable
-			if (document.getElementById("firstNumber").value !== "" && document.getElementById("secondNumber").value !== ""
-			    && document.getElementById("numOperators").innerText !== "") {
-				if (document.getElementById("numOperators").innerText === "+") {
-					numResult = Number(document.getElementById("firstNumber").value) + 
-					Number(document.getElementById("secondNumber").value);
-				} else if (document.getElementById("numOperators").innerText === "-") {
-					numResult = document.getElementById("firstNumber").value - 
-					document.getElementById("secondNumber").value;
-				} else if (document.getElementById("numOperators").innerText === "*") {
-					numResult = document.getElementById("firstNumber").value * 
-					document.getElementById("secondNumber").value;
-				} else if (document.getElementById("numOperators").innerText === "^") {
-					let tempResult = 1;
-					let tempNumber1 = document.getElementById("firstNumber").value;
-					let tempNumber2 = document.getElementById("secondNumber").value;
-					for (let count = 0; count < tempNumber2; count++) {
-						tempResult *= tempNumber1;
+			if (operatorArray !== []) {
+				numberArray.push(field.value);
+				numResult = parseFloat(numberArray[0]);
+				document.getElementById("resultPath").value = "";
+				for (let i = 1; i < numberArray.length; i++) {
+					if (operatorArray[i - 1] === "+") {
+						numResult = numResult + parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "-") {
+						numResult = numResult - parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "*") {
+						numResult = numResult * parseFloat(numberArray[i]);
+					} else if (operatorArray[i - 1] === "^") {
+						let tempResult = 1;
+						let tempNumber1 = numResult;
+						let tempNumber2 = parseInt(numberArray[i]);
+						for (let count = 0; count < tempNumber2; count++) {
+							tempResult *= tempNumber1;
 					}
 					numResult = tempResult;
-				} else { 
-					if (document.getElementById("secondNumber").value === "0") {
-						document.getElementById("errorMsg").innerHTML = "User input denied: Can not divide by zero";
-						numResult = "";
-					} else {
-					numResult = document.getElementById("firstNumber").value /
-					document.getElementById("secondNumber").value;
-					}
-				}
-				document.getElementById("result").value = parseFloat(numResult.toFixed(10));
+					} else if (operatorArray[i - 1] === "/") {
+						if (numberArray[i] === "0") {
+							numResult = NaN;
+							document.getElementById("resultPath").value = "Cannot divide by zero";
+						} else {
+							numResult = numResult / parseFloat(numberArray[i]);
+						}
+					} 
+				} field.value = parseFloat(numResult.toFixed(9));
+				numberArray = [];
+				operatorArray = [];
+				switch01 = 1;
 			} else {
-				document.getElementById("errorMsg").innerHTML = "Enter numbers in both fields and add operator ex. + - * or / ";
 			}
 		}
 	}
@@ -178,24 +227,42 @@ function buttonPress(event) {
 		
 //this function adds minus sign, decimal dot and clear option on mouse click 
 function specialSigns(signet) {
-	document.getElementById("errorMsg").innerHTML = "";
-	if (field === "" && signet !== "clear") {
-	} else if (field.value === "" && signet === "plusMinus") {
-		return field.value = "";
+	if (field === "0" && signet !== "clear") {
+	} else if (field.value === "0" && signet === "plusMinus") {
+		return field.value = "0";
 	} else if (field.value === "0." && signet === "plusMinus") {
 	} else if (signet === "plusMinus") {
 		return field.value = -(field.value);
 	} else if (signet === "clear") {
-		document.getElementById("firstNumber").value = "";
-		document.getElementById("secondNumber").value = "";
-		document.getElementById("numOperators").innerHTML = "";
-		document.getElementById("result").value = "";
-		return field = "";
-	} else if (field.value === "" && signet === ".") {
-		return field.value = "0.";
+		field.value = "0";
+		document.getElementById("resultPath").value = "";
+		numberArray = [];
+		operatorArray = [];
+		return switch01 = 0;
+	} else if (field.value === "0" && signet === ".") {
+		if (switch01 === 1) {
+			switch01 = 0;
+			return field.value = "0.";
+		} else {
+			return field.value = "0.";
+		}
 	} else if (!/\./.test(field.value) && signet === ".") {
-		return field.value += ".";
+		if (document.getElementById("resultPath").value === "Cannot divide by zero") {
+			switch01 = 0;
+			document.getElementById("resultPath").value = "";
+			return field.value = "0.";
+		} else if (switch01 === 1) {
+			switch01 = 0;
+			return field.value = "0.";
+		} else return field.value += ".";
 	} else if (signet === "backSpaceBtn") {
+		if (document.getElementById("resultPath").value === "Cannot divide by zero") {
+			document.getElementById("resultPath").value = "";
+			return field.value = 0;
+		} else if (field.value.length === 1) {
+			return field.value = 0;
+		} else {
 		return field.value = field.value.slice(0, field.value.length -1);
+		}
 	} 
 }
