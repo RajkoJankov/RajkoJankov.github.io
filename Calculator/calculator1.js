@@ -28,11 +28,11 @@ function numberButton(val) {
 				document.getElementById("resultPath").value += "^";
 			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
 				document.getElementById("resultPath").value = field.value + " " + "^";
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push("^");
 			} else {
 				document.getElementById("resultPath").value += " " + field.value + " " + "^";
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push("^");
 				return switch01 = 1;
 			}
@@ -44,46 +44,119 @@ function numberButton(val) {
 				document.getElementById("resultPath").value += val;
 			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
 				document.getElementById("resultPath").value = field.value + " " + val;
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push(val);
 			} else {
 				document.getElementById("resultPath").value += " " + field.value + " " + val;
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push(val);
 				return switch01 = 1;
 			}
 		} else if (val === "=") {
+			let tempNumberArray = [], tempOpArray = [], currentOperator = "";
 			if (operatorArray !== []) {
-				numberArray.push(field.value);
-				numResult = parseFloat(numberArray[0]);
+				let sampleArray = ["^","*","/","+","-"];
+				numberArray.push(parseFloat(field.value));
+				numResult = "";
 				document.getElementById("resultPath").value = "";
-				for (let i = 1; i < numberArray.length; i++) {
-					if (operatorArray[i - 1] === "+") {
-						numResult = numResult + parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "-") {
-						numResult = numResult - parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "*") {
-						numResult = numResult * parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "^") {
-						let tempResult = 1;
-						let tempNumber1 = numResult;
-						let tempNumber2 = parseInt(numberArray[i]);
-						for (let count = 0; count < tempNumber2; count++) {
-							tempResult *= tempNumber1;
-					}
-					numResult = tempResult;
-					} else if (operatorArray[i - 1] === "/") {
-						if (numberArray[i] === "0") {
-							numResult = NaN;
-							document.getElementById("resultPath").value = "Cannot divide by zero";
-						} else {
-							numResult = numResult / parseFloat(numberArray[i]);
+				for (let i = 0; i < sampleArray.length; i++) {
+					for (let j = 0; j < numberArray.length; j++) {
+						if (operatorArray[j] === sampleArray[i]) {
+							if (operatorArray[j] === "^") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = Math.pow(numResult, numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = Math.pow(numberArray[j], numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = Math.pow(numberArray[j], numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "*") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "/") {
+								if (numberArray[j + 1] === 0) {
+									document.getElementById("resultPath").value = "Cannot divide by zero";
+									switch01 = 1;
+									return field.value = NaN;
+								} else if (operatorArray[j] === currentOperator) {
+									numResult = numResult / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else  if (currentOperator !== ""){
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "+") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "-") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							}
+						} else if (currentOperator !== ""){
+							tempOpArray.push(currentOperator);
+							currentOperator = "";
+						} else if (currentOperator === "") {
+							tempNumberArray.push(numberArray[j]);
+							tempOpArray.push(operatorArray[j]);
 						}
 					} 
-				} field.value = parseFloat(numResult.toFixed(9));
-				numberArray = [];
-				operatorArray = [];
-				switch01 = 1;
+					numberArray = tempNumberArray;
+					operatorArray = tempOpArray;
+					tempNumberArray = [];
+					tempOpArray = [];
+				}
+				field.value = numResult;
+				switch01 = 1;	
 			} else {
 			}
 		}
@@ -179,46 +252,119 @@ function buttonPress(event) {
 				document.getElementById("resultPath").value += button1;
 			} else if (switch01 === 1 && document.getElementById("resultPath").value === "") {
 				document.getElementById("resultPath").value = field.value + " " + button1;
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push(button1);
 			} else {
 				document.getElementById("resultPath").value += " " + field.value + " " + button1;
-				numberArray.push(field.value);
+				numberArray.push(parseFloat(field.value));
 				operatorArray.push(button1);
 				return switch01 = 1;
 			}
 		} else if (button2 === 13) { // this condition check for numOperators in span and store calculation result in numResult variable
+			let tempNumberArray = [], tempOpArray = [], currentOperator = "";
 			if (operatorArray !== []) {
-				numberArray.push(field.value);
-				numResult = parseFloat(numberArray[0]);
+				let sampleArray = ["^","*","/","+","-"];
+				numberArray.push(parseFloat(field.value));
+				numResult = "";
 				document.getElementById("resultPath").value = "";
-				for (let i = 1; i < numberArray.length; i++) {
-					if (operatorArray[i - 1] === "+") {
-						numResult = numResult + parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "-") {
-						numResult = numResult - parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "*") {
-						numResult = numResult * parseFloat(numberArray[i]);
-					} else if (operatorArray[i - 1] === "^") {
-						let tempResult = 1;
-						let tempNumber1 = numResult;
-						let tempNumber2 = parseInt(numberArray[i]);
-						for (let count = 0; count < tempNumber2; count++) {
-							tempResult *= tempNumber1;
-					}
-					numResult = tempResult;
-					} else if (operatorArray[i - 1] === "/") {
-						if (numberArray[i] === "0") {
-							numResult = NaN;
-							document.getElementById("resultPath").value = "Cannot divide by zero";
-						} else {
-							numResult = numResult / parseFloat(numberArray[i]);
+				for (let i = 0; i < sampleArray.length; i++) {
+					for (let j = 0; j < numberArray.length; j++) {
+						if (operatorArray[j] === sampleArray[i]) {
+							if (operatorArray[j] === "^") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = Math.pow(numResult, numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = Math.pow(numberArray[j], numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = Math.pow(numberArray[j], numberArray[j + 1]);
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "*") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] * numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "/") {
+								if (numberArray[j + 1] === 0) {
+									document.getElementById("resultPath").value = "Cannot divide by zero";
+									switch01 = 1;
+									return field.value = NaN;
+								} else if (operatorArray[j] === currentOperator) {
+									numResult = numResult / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else  if (currentOperator !== ""){
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] / numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "+") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] + numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							} else if (operatorArray[j] === "-") {
+								if (operatorArray[j] === currentOperator) {
+									numResult = numResult - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray[tempNumberArray.length - 1] = numResult;
+								} else if (currentOperator !== "") {
+									tempOpArray.push(currentOperator);
+									numResult = numberArray[j] - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								} else if (currentOperator === "") {
+									numResult = numberArray[j] - numberArray[j + 1];
+									currentOperator = operatorArray[j + 1];
+									tempNumberArray.push(numResult);
+								}
+							}
+						} else if (currentOperator !== ""){
+							tempOpArray.push(currentOperator);
+							currentOperator = "";
+						} else if (currentOperator === "") {
+							tempNumberArray.push(numberArray[j]);
+							tempOpArray.push(operatorArray[j]);
 						}
 					} 
-				} field.value = parseFloat(numResult.toFixed(9));
-				numberArray = [];
-				operatorArray = [];
-				switch01 = 1;
+					numberArray = tempNumberArray;
+					operatorArray = tempOpArray;
+					tempNumberArray = [];
+					tempOpArray = [];
+				}
+				field.value = numResult;
+				switch01 = 1;	
 			} else {
 			}
 		}
