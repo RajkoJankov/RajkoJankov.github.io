@@ -260,7 +260,7 @@ function buttonPress(event) {
 				operatorArray.push(button1);
 				return switch01 = 1;
 			}
-		} else if (button2 === 13) { // this condition check for numOperators in span and store calculation result in numResult variable
+		} else if (button2 === 13) { // this condition check for operators in order of importance and does the equasion
 			let tempNumberArray = [], tempOpArray = [], currentOperator = "";
 			if (operatorArray !== []) {
 				let sampleArray = ["^","*","/","+","-"];
