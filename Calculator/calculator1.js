@@ -7,8 +7,10 @@ let numberArray = [], operatorArray = [], switch01 = 0;
 function numberButton(val) {
 	if (document.getElementById("resultPath").value === "Cannot divide by zero" && switch01 === 1) {
 		document.getElementById("resultPath").value = "";
+		numberArray = [];
+		operatorArray = [];
 		switch01 = 0;
-		field.value = 0;
+		field.value = "0";
 	}
 	if (field.value.length === 12 && val !== "+" && val !== "-" && 
 	val !== "*" && val !== "/" && val !== "=" && val !== "^") {
@@ -156,8 +158,9 @@ function numberButton(val) {
 					tempOpArray = [];
 				}
 				field.value = numResult;
+				numberArray = [];
+				operatorArray = [];
 				switch01 = 1;	
-			} else {
 			}
 		}
 	}
@@ -167,6 +170,14 @@ function numberButton(val) {
 function buttonPress(event) {
 	const button1 = event.key;
 	const button2 = event.keyCode;
+	
+	if (document.getElementById("resultPath").value === "Cannot divide by zero" && switch01 === 1) {
+		document.getElementById("resultPath").value = "";
+		numberArray = [];
+		operatorArray = [];
+		switch01 = 0;
+		field.value = "0";
+	}
 	
 	// this -for- checks if keyboard input matches the on screen buttons and "clicks" them
 	for (let i = 2; i < numbers1.length; i++) { 
@@ -364,9 +375,10 @@ function buttonPress(event) {
 					tempOpArray = [];
 				}
 				field.value = numResult;
+				numberArray = [];
+				operatorArray = [];
 				switch01 = 1;	
-			} else {
-			}
+			} else {}
 		}
 	}
 }
