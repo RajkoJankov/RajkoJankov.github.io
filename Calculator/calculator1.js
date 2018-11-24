@@ -230,6 +230,8 @@ function buttonPress(event) {
 			if (document.getElementById("resultPath").value === "Cannot divide by zero") {
 				document.getElementById("resultPath").value = "";
 				return field.value = 0;
+			} else if (field.value = "") {
+				return field.value = 0;
 			} else if (field.value.length === 1) {
 				return field.value = 0;
 			} else {
@@ -415,8 +417,11 @@ function specialSigns(signet) {
 		} else return field.value += ".";
 	} else if (signet === "backSpaceBtn") {
 		if (document.getElementById("resultPath").value === "Cannot divide by zero") {
+			field.value = "0";
 			document.getElementById("resultPath").value = "";
-			return field.value = 0;
+			numberArray = [];
+			operatorArray = [];
+			return switch01 = 0;
 		} else if (field.value.length === 1) {
 			return field.value = 0;
 		} else {

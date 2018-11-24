@@ -1,6 +1,4 @@
 ## Change in code
 
-1. Major changes in calculator1.js file
-3. In calculator1.js completely redid code for "equal" sign so it does arithmetic operations (^*/+-)
-   in order of importance. 
-
+1. Made some changes in index.html file moving calculator button next to other ones
+2. In Calculator project, added back to "Home" button at bottom of a page
