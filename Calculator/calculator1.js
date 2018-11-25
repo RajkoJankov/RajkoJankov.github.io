@@ -12,8 +12,12 @@ function numberButton(val) {
 		switch01 = 0;
 		field.value = "0";
 	}
-	if (field.value.length === 12 && val !== "+" && val !== "-" && 
-	val !== "*" && val !== "/" && val !== "=" && val !== "^") {
+	if (field.value.length === 12 && switch01 === 0 && val !== "+" && val !== "-" && 
+	val !== "*" && val !== "/" && val !== "pow" && val !== "=") {
+	} else if (field.value.length === 12 && switch01 === 1 && val !== "+" && val !== "-" && 
+	val !== "*" && val !== "/" && val !== "pow" && val !== "=") {
+		switch01 = 0;
+		return field.value = val;
 	} else {
 		if (field.value === "0" && val >= 0 && val <= 9) {
 			return field.value = val;
@@ -157,7 +161,9 @@ function numberButton(val) {
 					tempNumberArray = [];
 					tempOpArray = [];
 				}
-				field.value = numResult;
+				if (numResult.toString().length > 12) {
+					field.value = numResult.toExponential(7);
+				} else field.value = numResult;
 				numberArray = [];
 				operatorArray = [];
 				switch01 = 1;	
@@ -211,8 +217,12 @@ function buttonPress(event) {
 		return false;
 	} else {}
 	
-	if (field.value.length === 12 && button1 !== "+" && button1 !== "-" && 
+	if (field.value.length === 12 && switch01 === 0 && button1 !== "+" && button1 !== "-" && 
 	button1 !== "*" && button1 !== "/" && button1 !== "^" && button2 !== 13 && button2 !== 8 && button2 !== 27) {
+	} else if (field.value.length === 12 && switch01 === 1 && button1 !== "+" && button1 !== "-" && 
+	button1 !== "*" && button1 !== "/" && button1 !== "^" && button2 !== 13 && button2 !== 8 && button2 !== 27) {
+		switch01 = 0;
+		return field.value = button1;
 	} else {
 		field.blur();
 		if (button2 === 32) {
@@ -228,14 +238,15 @@ function buttonPress(event) {
 			} else return field.value += button1;
 		} else if (button2 === 8) {
 			if (document.getElementById("resultPath").value === "Cannot divide by zero") {
-				document.getElementById("resultPath").value = "";
-				return field.value = 0;
-			} else if (field.value = "") {
-				return field.value = 0;
+			field.value = "0";
+			document.getElementById("resultPath").value = "";
+			numberArray = [];
+			operatorArray = [];
+			return switch01 = 0;
 			} else if (field.value.length === 1) {
 				return field.value = 0;
 			} else {
-			return field.value = field.value.slice(0, field.value.length -1);
+				return field.value = field.value.slice(0, field.value.length -1);
 			}
 		} else if (button2 === 27) {
 			field.value = "0";
@@ -248,12 +259,15 @@ function buttonPress(event) {
 			switch01 = 0;
 			return field.value = "0.";
 		} else return field.value = "0.";
+		} else if (switch01 === 1 && button1 === ".") {
+			switch01 = 0;
+			return field.value = "0.";
 		} else if (!/\./.test(field.value) && button1 === ".") {
 			if (document.getElementById("resultPath").value === "Cannot divide by zero") {
 				switch01 = 0;
 				document.getElementById("resultPath").value = "";
 				return field.value = "0.";
-			} else if (switch01 === 1) {
+			} else if (switch01 === 1 && document.getElementById("resultPath").value !== "") {
 				switch01 = 0;
 				return field.value = "0.";
 			} else return field.value += ".";
@@ -376,7 +390,9 @@ function buttonPress(event) {
 					tempNumberArray = [];
 					tempOpArray = [];
 				}
-				field.value = numResult;
+				if (numResult.toString().length > 12) {
+					field.value = numResult.toExponential(7);
+				} else field.value = numResult;
 				numberArray = [];
 				operatorArray = [];
 				switch01 = 1;	
@@ -406,12 +422,17 @@ function specialSigns(signet) {
 		} else {
 			return field.value = "0.";
 		}
+	} else if (switch01 === 1 && signet === ".") {
+		switch01 = 0;
+		return field.value = "0.";
 	} else if (!/\./.test(field.value) && signet === ".") {
 		if (document.getElementById("resultPath").value === "Cannot divide by zero") {
 			switch01 = 0;
 			document.getElementById("resultPath").value = "";
+			numberArray = [];
+			operatorArray = [];
 			return field.value = "0.";
-		} else if (switch01 === 1) {
+		} else if (switch01 === 1 && document.getElementById("resultPath").value !== "") {
 			switch01 = 0;
 			return field.value = "0.";
 		} else return field.value += ".";
