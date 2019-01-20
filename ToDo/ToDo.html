@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ToDo</title>
+	<link rel="stylesheet" type="text/css" href="ToDo.css">
+	<script type="text/javascript" src="ToDo.js"></script>
+</head>
+<body>
+	<section class="clearfix">
+		<form method="post">
+			<input id="taskName" type="text" placeholder="Name your task" autocomplete="off">
+			<button id="clicker" name="addingTask" type="button" onclick="addTask()"><span style="color: green">
+			<b>&#10003;</b></span> Add task</button>
+			<p id="message">Task list empty..</p>
+			<article id="toDoList"></article>
+		</form>	
+	</section>
+	<footer>
+		<p>Back to <a href="../Projects.html">
+		<b>Projects</b></a> page</p>
+	</footer>
+</body>
+</html>

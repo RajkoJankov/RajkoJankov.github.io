@@ -1,0 +1,118 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-size: cover;
+	max-width: 1024px;
+	margin: auto;
+	background-color:hsl(0,0%,60%);
+	margin-top: 50px;
+}
+
+section {
+	min-height: 600px;
+}
+
+footer p {
+	text-align: center;
+	font-size: 140%;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+input[type=text] {
+	padding: 12px 10px 9px 10px;
+	border-radius: 5px;
+	width: 500px;
+}
+
+form button {
+	padding: 10px;
+	width: 150px;
+	cursor: pointer;
+}
+
+#message {
+	font-size: 150%;
+}
+
+.empty {
+	display: none;
+}
+
+table {
+	border-collapse: collapse;
+	margin-top: 50px;
+	background-color: white;
+}
+
+table th, td {
+	border: 2px solid black;
+}
+
+table td {
+	text-align: center;
+	height: 47px;
+}
+
+tr td:last-child {
+	max-width: 400px;
+	position: relative;
+	-webkit-user-modify: read-write;
+	word-wrap: break-word;
+	padding-right: 35px;
+}
+
+tr td:nth-child(2) {
+	word-wrap: break-word;
+	max-width: 250px;
+}
+
+tr td:nth-child(4) {
+	-webkit-user-modify: read-write;
+}
+
+th:first-child {
+	width: 70px;
+}
+
+th:nth-child(2) {
+	width: 250px;
+}
+
+th:nth-child(3), th:nth-child(4) {
+	width: 80px;
+}
+
+th:last-child {
+	width: 400px;
+}
+
+.checkerBox {
+	transform: scale(1.5);
+	position: absolute;
+	right: 10px;
+	top: 3px;
+	cursor: pointer;
+}
+
+.taskDeleteImg {
+	position: absolute;
+	right: 11px;
+	top: 25px;
+	cursor: pointer;
+}
+
+.alertColor::-webkit-input-placeholder {
+	color: red;
+}
