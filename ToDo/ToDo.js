@@ -14,6 +14,24 @@ function currentDate() {
 	return today;
 }
 
+window.addEventListener('DOMContentLoaded', function(){
+  var myDatepicker = document.querySelector('input[name="demo"]');
+  myDatepicker.DatePickerX.init({
+	mondayFirst      : true,
+	format           : 'dd/mm/yyyy',
+	minDate          : new Date(),
+	maxDate          : new Date(2099, 11, 31),
+	weekDayLabels    : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+	shortMonthLabels : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+	singleMonthLabels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	todayButton      : false,
+	todayButtonLabel : 'Today',
+	clearButton      : false,
+	clearButtonLabel : 'Clear'
+  });
+});
+
+
 let tasks = [];
 
 function remover() {
@@ -35,29 +53,45 @@ function tableBuilder(data) {
 	let table = document.createElement("table");
 	let	taskFields = Object.keys(data[0]);
 	let	headerRow = document.createElement("tr");
-	taskFields.forEach(function(taskField){
+	for (let i = 0; i < taskFields.length - 1; i++){
 		let headerCell = document.createElement("th");
-		headerCell.textContent = taskField;
+		headerCell.textContent = taskFields[i];
 		headerRow.appendChild(headerCell);
-	});
+	};
 	table.appendChild(headerRow);
 	
 	data.forEach(function(object) {
 		let row = document.createElement("tr");
-		taskFields.forEach(function(taskField){
+		for (let i = 0; i < taskFields.length - 1; i++){
 			let cell = document.createElement("td");
-			cell.textContent = object[taskField];
+			cell.textContent = object[taskFields[i]];
 			row.appendChild(cell);
-		});
+		};
 		table.appendChild(row);
+		
 	});
 	for (let i = 1, row; row = table.rows[i]; i++) {
+		
 		let tdChecker = document.createElement("input");
 		tdChecker.type = "checkbox";
 		tdChecker.classList.add("checkerBox");
+		tdChecker.checked = tasks[row.rowIndex -1].Done;
+		tdChecker.addEventListener("click", function() {
+			if (this.checked == true) {
+				tasks[row.rowIndex - 1].Done = true;
+				if(row.classList.contains("sameDayColor")) {
+					row.classList.remove("sameDayColor");
+				}
+				row.classList.add("doneColor");
+				tdChecker.disabled = true;
+			} else {
+				tasks[row.rowIndex - 1].Done = false;
+				row.classList.remove("doneColor");
+			}
+		});
 	
 		let taskDelete = document.createElement("img");
-		taskDelete.src = "../images/recyclebin.png";
+		taskDelete.src = "../images/recyclebin.jpg";
 		taskDelete.style.height= "18px";
 		taskDelete.style.width= "18px";
 		taskDelete.addEventListener("click", remover);
@@ -66,19 +100,39 @@ function tableBuilder(data) {
 		row.cells[4].setAttribute("id","row"+i+"cell");
 		row.cells["row"+i+"cell"].appendChild(tdChecker);
 		row.cells["row"+i+"cell"].appendChild(taskDelete);
+		row.cells["row"+i+"cell"].addEventListener("keyup", function() {
+			tasks[this.parentNode.rowIndex -1].Actions = this.textContent;
+		});
+		if(tasks[row.rowIndex - 1].Done === true) {
+			row.classList.add("doneColor");
+			tdChecker.disabled = true;
+		}
+		if (tasks[row.rowIndex - 1].Done === false) {
+			comparison(row);
+		}
 	}
 	return table;
 }
 	
 function addTask() {
-	if (document.getElementById("taskName").value === "") {
-		document.getElementById("taskName").classList.add("alertColor");
-		document.getElementById("taskName").placeholder = "Enter a task name first";
-		setTimeout(function() {
-			document.getElementById("taskName").classList.remove("alertColor");
-			document.getElementById("taskName").placeholder = "Name your task";
-		}, 2000);
-	} else {
+	if (document.getElementById("taskName").value === "" || document.querySelector('input[name="demo"]').value === "") {
+		if (document.getElementById("taskName").value === "") {
+			document.getElementById("taskName").classList.add("alertColor");
+			document.getElementById("taskName").placeholder = "Enter a task name first";
+			setTimeout(function() {
+				document.getElementById("taskName").classList.remove("alertColor");
+				document.getElementById("taskName").placeholder = "Name your task";
+			}, 1500);
+		}
+		if (document.querySelector('input[name="demo"]').value === "") {
+			document.querySelector('input[name="demo"]').classList.add("alertColor");
+			document.querySelector('input[name="demo"]').placeholder = "Pick a date first";
+			setTimeout(function() {
+				document.querySelector('input[name="demo"]').classList.remove("alertColor");
+				document.querySelector('input[name="demo"]').placeholder = "Due on date";
+			}, 1500);
+		}
+	}else {
 		if (tasks.length === 0) {
 			document.getElementById("message").classList.add("empty");
 		}
@@ -87,13 +141,45 @@ function addTask() {
 			"Task Number": tasks.length + 1,
 			"Task Name": document.getElementById("taskName").value,
 			"Date Added": currentDate(),
-			"Due On": "",
-			Actions: ""
+			"Due On": document.querySelector('input[name="demo"]').value,
+			"Actions": "",
+			"Done": false
 		});
 		if(document.querySelector("#toDoList").hasChildNodes()){
 			document.querySelector("#toDoList").removeChild(document.querySelector("#toDoList").firstChild);
 		}
 		document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
+		document.getElementById("taskName").value = "";
+		document.querySelector('input[name="demo"]').value = "";
 	}
-	document.getElementById("taskName").value = "";
+	console.log(tasks);
+}
+
+let idleTime;
+window.onload = resetTimer;
+document.onmousemove = resetTimer;
+document.onkeypress = resetTimer;
+function notIdle() {
+	if (tasks.length > 0) {
+		document.querySelector("#toDoList").removeChild(document.querySelector("#toDoList").firstChild);
+		document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
+		resetTimer();
+	} 
+}
+function resetTimer() {
+	clearTimeout(idleTime);
+	idleTime = setTimeout(notIdle, 60000);
+}
+
+function comparison(rowData) {
+	let givenTime = tasks[rowData.rowIndex - 1]["Due On"];
+	let parsedTime = givenTime.split("/");
+	let currentTime = currentDate().split("/");
+	if (currentTime[0] === parsedTime[0] && currentTime[1] === parsedTime[1] && currentTime[2] === parsedTime[2]) {
+		rowData.classList.add("sameDayColor");
+	} else if ((currentTime[0] > parsedTime[0] && currentTime[1] === parsedTime[1] && currentTime[2] === parsedTime[2]) || 
+	(currentTime[1] > parsedTime[1] && currentTime[2] === parsedTime[2]) || currentTime[2] > parsedTime[2]) {
+		rowData.classList.remove("sameDayColor");
+		rowData.classList.add("missedDayColor");
+	}
 }

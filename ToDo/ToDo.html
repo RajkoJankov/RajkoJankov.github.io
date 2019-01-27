@@ -6,13 +6,16 @@
 	<title>ToDo</title>
 	<link rel="stylesheet" type="text/css" href="ToDo.css">
 	<script type="text/javascript" src="ToDo.js"></script>
+	<link rel="stylesheet" href="DatePickerX.css">
+	<script src="DatePickerX.min.js"></script>
 </head>
 <body>
-	<section class="clearfix">
+	<section>
 		<form method="post">
-			<input id="taskName" type="text" placeholder="Name your task" autocomplete="off">
-			<button id="clicker" name="addingTask" type="button" onclick="addTask()"><span style="color: green">
-			<b>&#10003;</b></span> Add task</button>
+			<div><input id="taskName" type="text" placeholder="Name your task" autocomplete="off"></div>
+			<div><input type="text" name="demo" placeholder="Due on date" autocomplete="off"></div>
+			<div><button id="clicker" name="addingTask" type="button" onclick="addTask()"><span style="color: green">
+			<b>&#10003;</b></span> Add task</button></div>
 			<p id="message">Task list empty..</p>
 			<article id="toDoList"></article>
 		</form>	
