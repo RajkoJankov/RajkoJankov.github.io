@@ -70,16 +70,16 @@ a:hover {
 }
 
 .overlay {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background-color: hsl(0,0%,40%);
-			overflow: hidden;
-			width: 0;
-			height: 100%;
-			transition: .5s ease;
-		}
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: hsl(0,0%,40%);
+	overflow: hidden;
+	width: 0;
+	height: 100%;
+	transition: .5s ease;
+}
 
 .img_container:hover .overlay {
 	width: 100%;
