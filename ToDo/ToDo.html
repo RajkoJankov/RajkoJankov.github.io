@@ -10,16 +10,17 @@
 </head>
 <body>
 	<section>
-		<form method="post">
 			<div><input id="taskName" type="text" placeholder="Name your task" autocomplete="off"></div>
 			<div><input type="text" name="demo" placeholder="Due on date" autocomplete="off"></div>
 			<div><button id="clicker" name="addingTask" type="button" onclick="addTask()"><span style="color: green">
 			<b>&#10003;</b></span> Add task</button></div>
 			<p id="message">Task list empty..</p>
-			<article id="toDoList"></article>
-		</form>	
+			<article id="toDoList"></article>	
 	</section>
 	<footer>
+		<div style="text-align: center; margin-top: 50px" class="empty" id="sorterSwitch">
+			<button style="align: auto;padding: 10px; width: 150px; cursor: pointer;" onclick="sorter()">Sort by Due On date</button>
+		</div>
 		<p>Back to <a href="../Projects.html">
 		<b>Projects</b></a> page</p>
 	</footer>

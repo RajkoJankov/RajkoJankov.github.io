@@ -33,12 +33,16 @@ window.addEventListener('DOMContentLoaded', function(){
 
 let tasks = localStorage.getItem('storedTasks') ? JSON.parse(localStorage.getItem('storedTasks')) : [];
 localStorage.setItem('storedTasks', JSON.stringify(tasks));
-if (tasks.length > 0) {
+if (tasks.length === 1) {
 	document.getElementById("message").classList.add("empty");
 	document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
-} else if (tasks.length === 0) {
-	
+} else if (tasks.length >= 2) {
+	document.getElementById("message").classList.add("empty");
+	document.getElementById("sorterSwitch").classList.remove("empty");
+	document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
+}else if (tasks.length === 0) {	
 }
+
 
 function tableBuilder(data) {
 	let table = document.createElement("table");
@@ -122,7 +126,12 @@ function tableBuilder(data) {
 			for (let j = 0; j < tasks.length; j++){
 				tasks[j]["Task Number"] = j + 1;
 			}
-			if (tasks.length > 0) {
+			if (tasks.length > 1) {
+				document.querySelector("#toDoList").removeChild(document.querySelector("#toDoList").firstChild);
+				document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
+			}
+			if (tasks.length === 1) {
+				document.getElementById("sorterSwitch").classList.add("empty");
 				document.querySelector("#toDoList").removeChild(document.querySelector("#toDoList").firstChild);
 				document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
 			}
@@ -164,7 +173,9 @@ function tableBuilder(data) {
 		if (tasks[row.rowIndex - 1].Done === false) {
 			comparison(row);
 		}
-		console.log(row.cells[4].lastChild);
+	}
+	if (tasks.length > 1) {
+		document.getElementById("sorterSwitch").classList.remove("empty");
 	}
 	localStorage.setItem('storedTasks', JSON.stringify(tasks));
 	return table;
@@ -257,4 +268,24 @@ function comparison(rowData) {
 		rowData.classList.remove("sameDayColor");
 		rowData.classList.add("missedDayColor");
 	}
+}
+
+function sorter() {
+for (let j = 0; j < tasks.length; j++) {
+	for (let i = 0; i < tasks.length - 1; i++) {
+		let tempTime1 = tasks[i]["Due On"].split("/");
+		let tempTime2 = tasks[i + 1]["Due On"].split("/");
+		if ((tempTime1[0] > tempTime2[0] && tempTime1[1] === tempTime2[1] && tempTime1[2] === tempTime2[2]) || 
+		(tempTime1[1] > tempTime2[1] && tempTime1[2] === tempTime2[2]) || tempTime1[2] > tempTime2[2]) {
+			let temp02 = tasks[i + 1];
+			tasks.splice(i + 1, 1);
+			tasks.splice(i, 0, temp02);
+		}
+	}
+}
+for (let k = 0; k < tasks.length; k++){
+	tasks[k]["Task Number"] = k + 1;
+} 
+document.querySelector("#toDoList").removeChild(document.querySelector("#toDoList").firstChild);
+document.querySelector("#toDoList").appendChild(tableBuilder(tasks));
 }
