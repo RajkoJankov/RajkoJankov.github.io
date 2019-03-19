@@ -1,3 +1,3 @@
 ## Change in code
 
-1. Adding "Sort By Due On date" button for sorting tasks
+1. Added async exchange rate project

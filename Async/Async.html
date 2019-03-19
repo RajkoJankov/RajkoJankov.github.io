@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		
+		p {
+			text-align: center;
+		}
+	
+		.centerAlign {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			width: 256px;
+			height: 256px;
+			margin-top: -128px;
+			margin-left: -128px;
+		}
+		
+		.empty {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<article id="forTable">
+	<p id="secondOne" class="empty" ></p>
+	</article>
+	<div id="firstOne" class="centerAlign ">
+		<img src="sajtGif.gif">
+	</div>
+	<script>
+	
+	fetch('https://api.exchangeratesapi.io/latest')
+	.then(function(response) {
+		return response.json();
+	})
+	.then(function(myJson) {
+		document.getElementById("firstOne").classList.add("empty");
+		let para1 = document.getElementsByTagName("p");
+		para1[0].classList.remove("empty");
+		para1[0].innerHTML = "Exchange rate for " + myJson.base + " - " + myJson.date;
+		let ratesKeys = Object.keys(myJson.rates);
+		let ratesData = myJson.rates;
+		console.log(myJson.rates);
+		let table = document.createElement("table");
+		ratesKeys.forEach(object => {
+			let row = document.createElement("tr");
+			let cellOne = document.createElement("td");
+			cellOne.textContent = object;
+			console.log(cellOne);
+			let cellTwo = document.createElement("td");
+			cellTwo.textContent = ratesData[object];
+			console.log(cellTwo);
+			row.appendChild(cellOne);
+			row.appendChild(cellTwo);
+			table.appendChild(row);
+		});
+		document.getElementById("forTable").appendChild(table);
+	})
+	.catch(err => console.error("Request failed:", err));
+	
+	</script>
+</body>
+</html>
