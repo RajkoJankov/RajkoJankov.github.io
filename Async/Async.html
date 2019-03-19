@@ -45,16 +45,13 @@
 		para1[0].innerHTML = "Exchange rate for " + myJson.base + " - " + myJson.date;
 		let ratesKeys = Object.keys(myJson.rates);
 		let ratesData = myJson.rates;
-		console.log(myJson.rates);
 		let table = document.createElement("table");
 		ratesKeys.forEach(object => {
 			let row = document.createElement("tr");
 			let cellOne = document.createElement("td");
 			cellOne.textContent = object;
-			console.log(cellOne);
 			let cellTwo = document.createElement("td");
 			cellTwo.textContent = ratesData[object];
-			console.log(cellTwo);
 			row.appendChild(cellOne);
 			row.appendChild(cellTwo);
 			table.appendChild(row);
