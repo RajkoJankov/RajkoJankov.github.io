@@ -39,6 +39,7 @@
 		return response.json();
 	})
 	.then(function(myJson) {
+		console.log(myJson);
 		document.getElementById("firstOne").classList.add("empty");
 		let para1 = document.getElementsByTagName("p");
 		para1[0].classList.remove("empty");

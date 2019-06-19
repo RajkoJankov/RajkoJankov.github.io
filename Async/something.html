@@ -1,0 +1,42 @@
+<!DOCTYPE hml>
+<html>
+<body>
+	<button onclick="myFunction()">Click meh!</button>
+
+	<script>
+		function myFunction() {
+			let doings = value => {setTimeout(() => {console.log(value)}, 3000);return value + 1;}
+			let examplePromise = new Promise((resolve, reject) => {
+				resolve(n = 1);
+			});
+			examplePromise.then(doings)
+			.then(doings)
+			.then(doings);
+		}
+	
+		/* let examplePromise = new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve();
+			}, 4000);
+		});
+
+		function myFunction() {
+			examplePromise.then(function(){console.log("1")})
+			.then(function(){console.log("2")})
+			.then(function(){console.log("3")});
+		} */
+		
+		/* let examplePromise = new Promise((resolve, reject) => {
+			resolve();
+			reject();
+		});
+
+		function myFunction() {
+			examplePromise.then(() => {setTimeout(() => {console.log("1")}, 2000)})
+			.then(() => {setTimeout(() => {console.log("2")}, 2000)})
+			.then(() => {setTimeout(() => {console.log("3")}, 2000)})
+			.catch(err => console.log("Error:", err));
+		} */
+	</script>
+</body>
+</html>

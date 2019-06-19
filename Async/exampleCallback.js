@@ -1,12 +1,12 @@
 let buttonClick = document.getElementById("clicker");
 buttonClick.addEventListener("click", function() {
 	setTimeout(function() {
-		document.getElementById("demo").innerHTML = "1";
+		window.open("https://www.google.com");
 		setTimeout(function() {
-			document.getElementById("demo").innerHTML = "2";
+			window.open("https://www.youtube.com");
 			setTimeout(function() {
-				document.getElementById("demo").innerHTML = "3";
-			},1000);
-		},1000);
-	},1000);
+				window.open("https://www.somehting.com");
+			},3000);
+		},3000);
+	},3000);
 });
