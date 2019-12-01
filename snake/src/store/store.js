@@ -1,22 +1,23 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import { firestoreAction } from 'vuexfire'
+import { db } from '../db'
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        highscore: localStorage.getItem('snakeHighscore') ? 
-        JSON.parse(localStorage.getItem('snakeHighscore')) : [
-            {place: 1, name: 'numero uno', score: 10},
-            {place: 2, name: 'numero duo', score: 9},
-            {place: 3, name: 'numero tre', score: 8},
-            {place: 4, name: 'numero quattro', score: 7},
-            {place: 5, name: 'numero cinque', score: 6},
-            {place: 6, name: 'numero sei', score: 5},
-            {place: 7, name: 'numero sette', score: 4},
-            {place: 8, name: 'numero otto', score: 3},
-            {place: 9, name: 'numero nove', score: 2},
-            {place: 10, name: 'numero dieci', score: 1}
+        highscore: [
+            {place: 1, name: 'Numero uno', score: 10},
+            {place: 2, name: 'Numero Duo', score: 9},
+            {place: 3, name: 'Numero Tre', score: 8},
+            {place: 4, name: 'Numero Quattro', score: 7},
+            {place: 5, name: 'Numero Cinque', score: 6},
+            {place: 6, name: 'Numero Sei', score: 5},
+            {place: 7, name: 'Numero Sette', score: 4},
+            {place: 8, name: 'Numero Otto', score: 3},
+            {place: 9, name: 'Numero Nove', score: 2},
+            {place: 10, name: 'Numero Dieci', score: 1}
         ],
         username: ""
     },
@@ -42,28 +43,52 @@ export const store = new Vuex.Store({
                     state.highscore[i].place += 1;
                 }
             }
-            localStorage.setItem('snakeHighscore', JSON.stringify(state.highscore));
+            db.collection('highscore').get().then(docSnapshot => {
+                docSnapshot.forEach(doc => {
+                    let docRef = db.collection('highscore').doc(doc.id);
+                    let counter = doc.data().place - 1; 
+                    return docRef.update({
+                        name : state.highscore[counter].name,
+                        score : state.highscore[counter].score
+                    });
+                });
+            });
         },
         submitName: (state, name) => {
             state.username = name;
         },
         resetScore: state => {
             state.highscore = [
-                {place: 1, name: 'numero uno', score: 10},
-                {place: 2, name: 'numero duo', score: 9},
-                {place: 3, name: 'numero tre', score: 8},
-                {place: 4, name: 'numero quattro', score: 7},
-                {place: 5, name: 'numero cinque', score: 6},
-                {place: 6, name: 'numero sei', score: 5},
-                {place: 7, name: 'numero sette', score: 4},
-                {place: 8, name: 'numero otto', score: 3},
-                {place: 9, name: 'numero nove', score: 2},
-                {place: 10, name: 'numero dieci', score: 1}
+                {place: 1, name: 'Numero Uno', score: 10},
+                {place: 2, name: 'Numero Duo', score: 9},
+                {place: 3, name: 'Numero Tre', score: 8},
+                {place: 4, name: 'Numero Quattro', score: 7},
+                {place: 5, name: 'Numero Cinque', score: 6},
+                {place: 6, name: 'Numero Sei', score: 5},
+                {place: 7, name: 'Numero Sette', score: 4},
+                {place: 8, name: 'Numero Otto', score: 3},
+                {place: 9, name: 'Numero Nove', score: 2},
+                {place: 10, name: 'Numero Dieci', score: 1}
             ];
-            localStorage.setItem('snakeHighscore', JSON.stringify(state.highscore));
+            db.collection('highscore').get().then(docSnapshot => {
+                docSnapshot.forEach(doc => {
+                    let docRef = db.collection('highscore').doc(doc.id);
+                    let counter = doc.data().place - 1; 
+                    return docRef.update({
+                        name : state.highscore[counter].name,
+                        score : state.highscore[counter].score
+                    });
+                });
+            });
         }
     },
     actions: {
+        bindscores: firestoreAction(({ bindFirestoreRef }) => {
+            return bindFirestoreRef('highscore', db.collection('highscore'))
+        }),
+        unbindscores: firestoreAction(({ unbindFirestoreRef }) => {
+            unbindFirestoreRef('highscore')
+        }),
         gameover: (context, value) => {
             context.commit('gameover', value)
         },
@@ -75,4 +100,16 @@ export const store = new Vuex.Store({
         }
     }
 })
-//treba da se namesti username da radi
+
+db.collection('highscore').get().then(docSnapshot => {
+    store.state.highscore = [];
+    docSnapshot.docs.forEach(doc => {
+        store.state.highscore.push(
+            {
+                place : doc.data().place,
+                name : doc.data().name,
+                score : doc.data().score
+            }   
+        );
+    });
+});
